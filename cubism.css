@@ -13,8 +13,13 @@ pre {
 }
 
 .wrapper {
-    margin: 150px auto 0 auto;
+    margin: 100px auto 0 auto;
     text-align: center;
+
+    -webkit-perspective: 800px;
+    -moz-perspective: 800px;
+    -ms-perspective: 800px;
+    perspective: 800px;
 }
 
 .cubism-cub {
@@ -22,12 +27,13 @@ pre {
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     font-smoothing: antialiased;
-    cursor: move;
-    cursor: -webkit-grab;
-    cursor: -moz-grab;
     display: inline-block;
     position: relative;
     margin: 0 20px;
+
+    cursor: move;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
 
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;

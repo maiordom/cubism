@@ -138,7 +138,7 @@
             for ( var i = 0, ilen = this.prefixList.length; i < ilen; i++ ) {
                 prefix = this.prefixList[ i ];
                 prefixed = prefix + prop;
-                if ( document.body.style[ prefixed ] !== null ) {
+                if ( document.body.style[ prefixed ] !== undefined ) {
                     return prefixed;
                 }
             }
@@ -147,10 +147,9 @@
         },
 
         createCub: function( el ) {
-            var sides, self = this, cub;
+            var self = this, cub;
 
-            sides = this.createSides( el ),
-            cub  = this.getInitialCubData( el );
+            cub = this.getInitialCubData( el );
 
             setTimeout( function() {
                 self.cubPosition( cub );
@@ -167,7 +166,6 @@
                 sides.appendChild( side );
             }
 
-            el[ 0 ].appendChild( sides );
             el[ 0 ].classList.add( 'cubism-cub' );
             el[ 0 ].style.width = el[ 0 ].style.height = this.size + 'px';
 
@@ -175,7 +173,10 @@
         },
 
         getInitialCubData: function( el ) {
-            var rotateData = el.data();
+            var rotateData = el.data(),
+                sides = this.createSides( el );
+
+            el[ 0 ].appendChild( sides );
 
             return {
                 el: el,
