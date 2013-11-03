@@ -22,6 +22,14 @@ pre {
     perspective: 800px;
 }
 
+.tween-stop {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    -ms-transition: none !important;
+    transition: none !important;
+}
+
 .cubism-cub {
     font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;

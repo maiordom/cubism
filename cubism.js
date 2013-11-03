@@ -49,6 +49,7 @@
             var cub = this.findCub( e.target ),
                 elOffset = cub.el.offset();
 
+            cub.el.addClass( 'tween-stop' );
             cub.mouseOffset.x = e.pageX;
             cub.mouseOffset.y = e.pageY;
             cub.elOffset.x    = elOffset.left;
@@ -57,11 +58,29 @@
             cub.el.on( 'mousemove',  bind( this, this.onRotate ) );
             cub.el.on( 'mouseleave', bind( this, this.onStopRotate ) );
             cub.el.on( 'mouseup',    bind( this, this.onStopRotate ) );
+            return false;
         },
 
         onStopRotate: function( e ) {
-            var cub = this.findCub( e.target );
+            var cub = this.findCub( e.target ), degY;
+            cub.el.removeClass( 'tween-stop' );
             cub.el.off( 'mouseleave mousemove mouseup' );
+
+            degY = cub.yLast % 90;
+
+            if ( degY < 45 || degY > 0 ) {
+                cub.yLast = cub.rotate.x + degY;
+            } else {
+                cub.yLast = cub.rotate.x - ( 90 - degY );
+            }
+
+            if ( cub.yLast % 90 !== 0 ) {
+                cub.yLast -= cub.yLast % 90;
+            }
+
+            cub.rotate.y = cub.xLast;
+            cub.rotate.x = cub.yLast;
+            this.cubPosition( cub );
         },
 
         onRotate: function( e ) {
@@ -69,15 +88,9 @@
                 diffX = e.pageX - cub.mouseOffset.x,
                 diffY = e.pageY - cub.mouseOffset.y, distance, staticDistance;
 
-            if ( diffY > 0 ) {
-                distance = cub.elOffset.y + this.size - e.pageY;
-                staticDistance = cub.elOffset.y + this.size - cub.mouseOffset.y;
-            } else {
-                distance = e.pageY - cub.elOffset.y;
-                staticDistance = cub.mouseOffset.y - cub.elOffset.y;
-            }
-
-            console.log( e.pageY, cub.elOffset.y, distance );
+            cub.rotate.x = cub.yLast - diffY;
+            cub.rotate.y = - ( cub.xLast - diffX );
+            this.cubPosition( cub );
         },
 
         getCubFromTarget: function( target ) {
@@ -185,6 +198,8 @@
                     y: rotateData.rotatey || 0,
                     z: rotateData.rotatez || 0
                 },
+                xLast: 0,
+                yLast: 0,
                 mouseOffset: { x: 0, y: 0 },
                 elOffset: { x: 0, y: 0 }
             };
